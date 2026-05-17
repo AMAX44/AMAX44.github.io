@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <!-- <base href="/"> -->
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Ammar's Portfolio Website">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="ammar_portfolio">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.ico"/>
+
+  <title>Ammar's Portfolio</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    const serviceWorkerVersion = "1851205053";
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+</head>
+<body>
+  <style>
+    body {
+      background: linear-gradient(135deg, #F0FBFF, #DEF5FF);
+      height: 100vh;
+      width: 100vw;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .main-content {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.4s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Cyber grid */
+    .cyber-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,119,170,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,119,170,0.07) 1px, transparent 1px);
+      background-size: 55px 55px;
+      pointer-events: none;
+    }
+
+    /* Scan line */
+    .scan-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(0,119,170,0.04),
+        rgba(0,119,170,0.10),
+        rgba(0,119,170,0.04),
+        transparent
+      );
+      animation: scan 2.8s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes scan {
+      0%  { top: -120px; }
+      100%{ top: 100vh; }
+    }
+
+    /* Corner brackets */
+    .corner {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-color: rgba(0,119,170,0.35);
+      border-style: solid;
+    }
+    .corner-tl { top: 14px; left: 14px;  border-width: 2px 0 0 2px; }
+    .corner-tr { top: 14px; right: 14px; border-width: 2px 2px 0 0; }
+    .corner-bl { bottom: 14px; left: 14px;  border-width: 0 0 2px 2px; }
+    .corner-br { bottom: 14px; right: 14px; border-width: 0 2px 2px 0; }
+
+    /* Logo + rings */
+    .logo-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 160px;
+      height: 160px;
+    }
+
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border-style: solid;
+    }
+
+    .ring-outer {
+      width: 152px;
+      height: 152px;
+      border-width: 1px;
+      border-color: rgba(0,119,170,0.15) rgba(0,119,170,0.15) rgba(0,119,170,0.5) rgba(0,119,170,0.15);
+      animation: spin 2.4s linear infinite reverse;
+    }
+
+    .ring-inner {
+      width: 122px;
+      height: 122px;
+      border-width: 2px;
+      border-color: #0077aa rgba(0,119,170,0.3) rgba(0,119,170,0.3) rgba(0,119,170,0.3);
+      animation: spin 1.1s linear infinite;
+      box-shadow: 0 0 20px rgba(0,119,170,0.25), inset 0 0 10px rgba(0,119,170,0.06);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    img {
+      width: 72px;
+      height: 72px;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 0 10px rgba(0,119,170,0.4));
+    }
+
+    /* Loading text */
+    .loader-text {
+      margin-top: 28px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: rgba(0,119,170,0.7);
+      text-transform: uppercase;
+      animation: pulse 1.6s ease-in-out infinite;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 1; }
+    }
+  </style>
+  <script>
+    function delay(time) {
+      return new Promise(resolve => setTimeout(resolve, time));
+    }
+
+    window.addEventListener('load', function (ev) {
+      var loaderContent = document.querySelector('#loader-content');
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine().then(async function (appRunner) {
+            loaderContent.style.opacity = "0";
+            await delay(400);
+            await appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+  <script>
+    window.onload = function () {
+      setTimeout(function () {
+        var loadingIndicator = document.getElementById("loading_indicator");
+        if (loadingIndicator) {
+          loadingIndicator.remove();
+        }
+      }, 10000);
+    };
+  </script>
+  <div class="main-content" id="loader-content">
+    <div class="cyber-grid"></div>
+    <div class="scan-line"></div>
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+    <div class="logo-wrapper">
+      <div class="ring ring-outer"></div>
+      <div class="ring ring-inner"></div>
+      <img src="app_logo.png" alt="Ammar's Portfolio" />
+    </div>
+    <div class="loader-text">Initializing...</div>
+  </div>
+</body>
+</html>
